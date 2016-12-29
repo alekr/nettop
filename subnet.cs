@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace nettop
 {
-    class Subnet
+    public class Subnet
     {
         private string cidr = null;
+        private string name = null;
          
         public Subnet (string cidr)
         {
@@ -16,24 +18,33 @@ namespace nettop
             CIDR = cidr;
         }
 
+        [RefreshProperties(RefreshProperties.All)]
+        [Category("CIDR Notation")]
+        [Description("Classless Inter-Domain Routing (CIDR) signature of this subnet")]
         public string CIDR
         {
             get { return cidr; }
-            private set { SetCIDR(value); }
+            set { SetCIDR(value); }
         }
 
+        [Description("Base IP address as entered in CIDR notation (may not be the same as the first usable IP address if CIDR property is not correctly specified")]
+        [Category("CIDR Notation")]
         public string CIDRBase
         {
             get;
             private set;
         }
 
+        [Description("Network mask in CIDR notation (the number after the '/' character)")]
+        [Category("CIDR Notation")]
         public int CIDRMask
         {
             get;
             private set;
         }
 
+        [Description("Network mask in standard dotted notation")]
+        [Category("Dotted Notation")]
         public string NetMask
         {
             get;
@@ -46,6 +57,8 @@ namespace nettop
             set;
         }
 
+        [Description("First (lowest) usable IP address in the subnet range")]
+        [Category("Dotted Notation")]
         public string FirstUsable
         {
             get
@@ -59,6 +72,8 @@ namespace nettop
             }
         }
 
+        [Description("Last (highest) usable IP address in the subnet range")]
+        [Category("Dotted Notation")]
         public string LastUsable
         {
             get
@@ -67,15 +82,17 @@ namespace nettop
                     return null;
 
                 UInt32 addr32 = Utils.IPAddressStrToInt(FirstUsable);
-                UInt32 networkSize = Utils.TwoToPowerOf(32 - CIDRMask);
+                UInt64 networkSize = Utils.TwoToPowerOf(32 - CIDRMask);
 
-                addr32 += (networkSize - 1);
+                addr32 += (UInt32)(networkSize - 1);
 
                 return Utils.IpAddressIntToStr(addr32);
             }
         }
 
-        public UInt32 Size
+        [Description("Number of IP addresses in the subnet")]
+        [Category("General Info")]
+        public UInt64 Size
         {
             get
             {
@@ -83,6 +100,23 @@ namespace nettop
                     return 0;
 
                 return Utils.TwoToPowerOf(32 - CIDRMask);
+            }
+        }
+
+        [Description("Descriptive name of the subnet")]
+        [Category("General Info")]
+        public string Name
+        {
+            get
+            {
+                if (name == null)
+                    name = CIDR;
+
+                return name;
+            }
+            set
+            {
+                name = value;
             }
         }
 
@@ -105,6 +139,8 @@ namespace nettop
 
         private void SetCIDR(string value)
         {
+            Boolean autoName = (cidr == name);
+
             if (value == null)
                 return;
 
@@ -119,7 +155,7 @@ namespace nettop
                 return;
 
             mask = Convert.ToInt32(items[1]);
-            if ((mask < 1) || (mask > 32))
+            if ((mask < 0) || (mask > 32))
                 return;
 
             string[] addressParts = items[0].Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
@@ -133,13 +169,23 @@ namespace nettop
                     return;
             }
 
+            if ((mask == 0) && (items[0] != "0.0.0.0"))
+                return;
+
             CIDRBase = items[0];
             CIDRMask = mask;
 
-            NetMaskInt = 0xFFFFFFFF << (32 - CIDRMask);
+            if (mask == 0)
+                NetMaskInt = 0xFFFFFFFF;
+            else
+                NetMaskInt = 0xFFFFFFFF << (32 - CIDRMask);
+
             NetMask = Utils.IpAddressIntToStr(NetMaskInt);
 
             cidr = value;
+
+            if (autoName)
+                name = value;
         }
     }
 }

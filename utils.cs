@@ -8,9 +8,9 @@ namespace nettop
 {
     class Utils
     {
-        public static UInt32 TwoToPowerOf(int power)
+        public static UInt64 TwoToPowerOf(int power)
         {
-            UInt32 result = 1;
+            UInt64 result = 1;
 
             while (power > 0)
             {

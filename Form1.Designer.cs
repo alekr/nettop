@@ -39,13 +39,15 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.treeView1 = new System.Windows.Forms.TreeView();
-            this.splitter1 = new System.Windows.Forms.Splitter();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.userControlSubnetEditor1 = new nettop.UserControlSubnetEditor();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBox1
@@ -104,6 +106,7 @@
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(36, 36);
             this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // statusStrip1
             // 
@@ -151,13 +154,14 @@
             this.tabPage2.Text = "Subnets";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // treeView1
+            // panel1
             // 
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.treeView1.Location = new System.Drawing.Point(3, 3);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(249, 389);
-            this.treeView1.TabIndex = 0;
+            this.panel1.Controls.Add(this.userControlSubnetEditor1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(255, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(494, 389);
+            this.panel1.TabIndex = 2;
             // 
             // splitter1
             // 
@@ -167,13 +171,20 @@
             this.splitter1.TabIndex = 1;
             this.splitter1.TabStop = false;
             // 
-            // panel1
+            // treeView1
             // 
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(255, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(494, 389);
-            this.panel1.TabIndex = 2;
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.treeView1.Location = new System.Drawing.Point(3, 3);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(249, 389);
+            this.treeView1.TabIndex = 0;
+            // 
+            // userControlSubnetEditor1
+            // 
+            this.userControlSubnetEditor1.Location = new System.Drawing.Point(64, 38);
+            this.userControlSubnetEditor1.Name = "userControlSubnetEditor1";
+            this.userControlSubnetEditor1.Size = new System.Drawing.Size(342, 297);
+            this.userControlSubnetEditor1.TabIndex = 0;
             // 
             // Form1
             // 
@@ -185,12 +196,14 @@
             this.Controls.Add(this.toolStrip1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -211,6 +224,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.TreeView treeView1;
+        private UserControlSubnetEditor userControlSubnetEditor1;
     }
 }
 
